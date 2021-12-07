@@ -1,0 +1,15 @@
+{
+    "nombreApp": "eSportsChase",
+    "tapBar": [{
+            "es": "Noticias",
+            "en": "News"
+        },
+        {
+            "es": "Torneos",
+            "en": "Tournaments"
+        }, {
+            "es": "Partidos en Vivo",
+            "en": "Live Matches"
+        }
+    ]
+}

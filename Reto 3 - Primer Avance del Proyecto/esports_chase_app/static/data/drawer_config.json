@@ -1,0 +1,28 @@
+{
+    "drawer": [{
+            "section": "Feed",
+            "name": "Feed",
+            "icon": "feed"
+        },
+        {
+            "section": "Games",
+            "name": "League of Legends",
+            "icon": "static/assets/League.png"
+        },
+        {
+            "section": "Games",
+            "name": "Valorant",
+            "icon": "static/assets/Valorant.png"
+        },
+        {
+            "section": "Configuration",
+            "name": "Preferences",
+            "icon": "accessibility"
+        },
+        {
+            "section": "Configuration",
+            "name": "About Us",
+            "icon": "add_alert"
+        }
+    ]
+}
