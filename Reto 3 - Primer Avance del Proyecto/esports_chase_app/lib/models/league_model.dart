@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-class DrawerModel extends ChangeNotifier {
+class LeagueModel extends ChangeNotifier {
   var _selected = "Feed";
 
   String get selected => _selected;

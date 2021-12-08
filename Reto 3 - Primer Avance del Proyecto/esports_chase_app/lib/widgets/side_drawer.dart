@@ -162,9 +162,9 @@ class _DrawerBodyState extends State<_DrawerBody> {
               onTap: () {
                 if (drawerModel.selected != listTile['name']) {
                   drawerModel.selected = listTile['name'];
+                  Navigator.pop(context);
                   Navigator.pushReplacementNamed(context, listTile['name']);
                 }
-                // Navigator.pop(context);
                 //NAVIGATE TO TAB
               }));
 

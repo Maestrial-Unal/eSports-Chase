@@ -1,3 +1,6 @@
+import 'package:esports_chase_app/widgets/live_tab.dart';
+import 'package:esports_chase_app/widgets/news_tab.dart';
+import 'package:esports_chase_app/widgets/tournaments_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:esports_chase_app/widgets/custom_appbar.dart';
 import 'package:esports_chase_app/widgets/side_drawer.dart';
@@ -10,12 +13,12 @@ class LeagueScreen extends StatelessWidget {
     final scaffoldState = GlobalKey<ScaffoldState>();
     const _selectedTabColor = Color.fromRGBO(78, 186, 247, 1);
 
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-          key: scaffoldState,
-          drawer: const SideDrawer(),
-          body: Column(
+    return Scaffold(
+        key: scaffoldState,
+        drawer: const SideDrawer(),
+        body: DefaultTabController(
+          length: 3,
+          child: Column(
             children: [
               CustomAppbar(scaffoldState: scaffoldState),
               const TabBar(
@@ -27,8 +30,8 @@ class LeagueScreen extends StatelessWidget {
               ),
               const _TabsContent()
             ],
-          )),
-    );
+          ),
+        ));
   }
 }
 
@@ -43,9 +46,9 @@ class _TabsContent extends StatelessWidget {
       child: TabBarView(
         physics: BouncingScrollPhysics(),
         children: [
-          Icon(Icons.directions_ferry_outlined),
-          Icon(Icons.directions_car_filled_outlined),
-          Icon(Icons.directions_ferry_rounded),
+          NewsTab(imageURL: "static/assets/B_League.jpg", tabName: "League of Legends"),
+          TournamentsTab(),
+          LiveTab(),
         ],
       ),
     );

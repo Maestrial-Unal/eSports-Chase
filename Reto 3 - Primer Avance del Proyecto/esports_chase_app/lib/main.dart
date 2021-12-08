@@ -8,7 +8,6 @@ import 'package:esports_chase_app/screens/feed_screen.dart';
 import 'package:esports_chase_app/screens/league_screen.dart';
 import 'package:esports_chase_app/screens/valorant_screen.dart';
 import 'package:esports_chase_app/shared_prefs/favourite_prefs.dart';
-import 'package:esports_chase_app/utils/drawer_provider.dart';
 
 import 'package:provider/provider.dart';
 

@@ -10,12 +10,12 @@ class ValorantScreen extends StatelessWidget {
     final scaffoldState = GlobalKey<ScaffoldState>();
     const _selectedTabColor = Color.fromRGBO(78, 186, 247, 1);
 
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-          key: scaffoldState,
-          drawer: const SideDrawer(),
-          body: Column(
+    return Scaffold(
+        key: scaffoldState,
+        drawer: const SideDrawer(),
+        body: DefaultTabController(
+          length: 3,
+          child: Column(
             children: [
               CustomAppbar(scaffoldState: scaffoldState),
               const TabBar(
@@ -27,8 +27,8 @@ class ValorantScreen extends StatelessWidget {
               ),
               const _TabsContent()
             ],
-          )),
-    );
+          ),
+        ));
   }
 }
 
