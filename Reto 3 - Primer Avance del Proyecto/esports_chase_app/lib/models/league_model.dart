@@ -1,12 +1,12 @@
-import 'package:flutter/foundation.dart';
+// import 'package:flutter/foundation.dart';
 
-class LeagueModel extends ChangeNotifier {
-  var _selected = "Feed";
+// class LeagueModel extends ChangeNotifier {
+//   var _selected = "Feed";
 
-  String get selected => _selected;
+//   String get selected => _selected;
 
-  set selected(String selected) {
-    _selected = selected;
-    notifyListeners();
-  }
-}
+//   set selected(String selected) {
+//     _selected = selected;
+//     notifyListeners();
+//   }
+// }

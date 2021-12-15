@@ -5,7 +5,7 @@ import 'package:flutter/services.dart' show rootBundle;
 class _DrawerProvider {
   List<dynamic> drawerOptions = [];
 
-  _DrawerProvider() {}
+  _DrawerProvider();
 
   Future<List<dynamic>> cargarData() async {
     if (drawerOptions.isNotEmpty) return drawerOptions;
@@ -16,15 +16,6 @@ class _DrawerProvider {
 
     return drawerOptions;
   }
-
-  List<dynamic> obtenerData() {
-    return drawerOptions;
-  }
-
-  changeData(i) {
-    drawerOptions[i] = !drawerOptions[i];
-    //Subir los cambios de favoritos al json
-  }
 }
 
-final drawerProvider = new _DrawerProvider();
+final drawerProvider = _DrawerProvider();

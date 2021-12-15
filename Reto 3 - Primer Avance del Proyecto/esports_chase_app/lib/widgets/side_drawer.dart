@@ -13,36 +13,26 @@ class SideDrawer extends StatefulWidget {
 }
 
 class _SideDrawerState extends State<SideDrawer> {
-  final double _drawerHeaderHeight = 120;
-
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius:
           const BorderRadius.only(topRight: Radius.circular(30), bottomRight: Radius.circular(30)),
       child: Drawer(
-        child: Column(children: <Widget>[
-          _DrawerHeader(drawerHeaderHeight: _drawerHeaderHeight),
-          _DrawerBody(drawerHeaderHeight: _drawerHeaderHeight)
-        ]),
+        child: Column(children: const [_DrawerHeader(), _DrawerBody()]),
       ),
     );
   }
 }
 
 class _DrawerHeader extends StatelessWidget {
-  const _DrawerHeader({
-    Key? key,
-    required double drawerHeaderHeight,
-  })  : _drawerHeaderHeight = drawerHeaderHeight,
-        super(key: key);
-
-  final double _drawerHeaderHeight;
+  const _DrawerHeader({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: _drawerHeaderHeight,
+      margin: const EdgeInsets.only(top: 12),
+      height: 120,
       padding: const EdgeInsets.fromLTRB(0, 20, 30, 0),
       decoration: BoxDecoration(
         border: Border(
@@ -76,13 +66,7 @@ class _DrawerHeader extends StatelessWidget {
 }
 
 class _DrawerBody extends StatefulWidget {
-  const _DrawerBody({
-    Key? key,
-    required double drawerHeaderHeight,
-  })  : _drawerHeaderHeight = drawerHeaderHeight,
-        super(key: key);
-
-  final double _drawerHeaderHeight;
+  const _DrawerBody({Key? key}) : super(key: key);
 
   @override
   State<_DrawerBody> createState() => _DrawerBodyState();
@@ -91,8 +75,7 @@ class _DrawerBody extends StatefulWidget {
 class _DrawerBodyState extends State<_DrawerBody> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height - widget._drawerHeaderHeight,
+    return Expanded(
       child: FutureBuilder(
         future: drawerProvider.cargarData(),
         initialData: const [],
@@ -165,7 +148,6 @@ class _DrawerBodyState extends State<_DrawerBody> {
                   Navigator.pop(context);
                   Navigator.pushReplacementNamed(context, listTile['name']);
                 }
-                //NAVIGATE TO TAB
               }));
 
       if (listTile["section"] == "Feed" ||

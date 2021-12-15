@@ -1,3 +1,4 @@
+import 'package:esports_chase_app/screens/news_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:esports_chase_app/models/drawer_model.dart';
@@ -73,7 +74,8 @@ class MyApp extends StatelessWidget {
       "League of Legends": (BuildContext context) => const LeagueScreen(),
       "Valorant": (BuildContext context) => const ValorantScreen(),
       "Preferences": (BuildContext context) => const ConfigScreen(),
-      "About Us": (BuildContext context) => const AboutScreen()
+      "About Us": (BuildContext context) => const AboutScreen(),
+      "News": (BuildContext context) => const NewsScreen(),
     };
   }
 }

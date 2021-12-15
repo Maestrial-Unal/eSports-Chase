@@ -1,3 +1,4 @@
+import 'package:esports_chase_app/router/news_arguments.dart';
 import 'package:flutter/material.dart';
 
 class NewsTab extends StatefulWidget {
@@ -17,6 +18,7 @@ class NewsTab extends StatefulWidget {
 class _NewsTabState extends State<NewsTab> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
+    super.build;
     return ListView(
       padding: EdgeInsets.zero,
       children: [
@@ -27,7 +29,6 @@ class _NewsTabState extends State<NewsTab> with AutomaticKeepAliveClientMixin {
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }
 
@@ -78,6 +79,9 @@ class _NewsBody extends StatelessWidget {
         _NewsCard(nNews: "3"),
         _NewsCard(nNews: "4"),
         _NewsCard(nNews: "5"),
+        _NewsCard(nNews: "6"),
+        _NewsCard(nNews: "7"),
+        _NewsCard(nNews: "8"),
       ],
     );
   }
@@ -92,7 +96,7 @@ class _NewsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        print("Se presionó la noticia $nNews");
+        Navigator.pushNamed(context, "News", arguments: NewsArguments(nNews, ""));
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -103,26 +107,37 @@ class _NewsCard extends StatelessWidget {
           shadowColor: const Color.fromRGBO(0, 82, 201, 1),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           child: Padding(
-            padding: const EdgeInsets.all(5),
-            child: ListTile(
-              leading: const Image(
-                image: AssetImage("static/assets/loading.gif"),
-                height: 80,
-              ),
-              title: const Text(
-                "Titulo de la Noticia",
-                textAlign: TextAlign.end,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+            padding: const EdgeInsets.only(left: 8, top: 15, right: 8, bottom: 15),
+            child: Row(
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  child: const Image(
+                    image: AssetImage("static/assets/loading.gif"),
+                    height: 80,
+                  ),
                 ),
-              ),
-              subtitle: Container(
-                margin: EdgeInsets.only(top: 5),
-                child: Text(
-                  "Esta es la descripción de la noticia $nNews. Aquí se puede encontrar información de relevancia.",
-                  textAlign: TextAlign.end,
-                ),
-              ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Titulo de la Noticia $nNews",
+                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 15),
+                        width: double.infinity,
+                        child: Text(
+                          "Esta es la descripción de la noticia $nNews. Aquí se puede encontrar información de relevancia.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ultricies malesuada rhoncus.",
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
             ),
           ),
         ),

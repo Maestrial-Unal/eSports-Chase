@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 
 class CustomAppbar extends StatefulWidget {
-  final scaffoldState;
-
-  const CustomAppbar({Key? key, required this.scaffoldState}) : super(key: key);
+  const CustomAppbar({Key? key}) : super(key: key);
 
   @override
   State<CustomAppbar> createState() => _CustomAppbarState();
 }
 
 class _CustomAppbarState extends State<CustomAppbar> {
-  String _searchText = "";
+  // String _searchText = "";
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +16,9 @@ class _CustomAppbarState extends State<CustomAppbar> {
       child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           height: 60,
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             IconButton(
-                onPressed: () => widget.scaffoldState.currentState.openDrawer(),
+                onPressed: () => Scaffold.of(context).openDrawer(),
                 icon: const Icon(Icons.menu),
                 splashColor: Colors.transparent,
                 highlightColor: Colors.transparent),
@@ -30,9 +27,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
               icon: const Icon(Icons.notifications_active),
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
-              onPressed: () {
-                print("Se quieren ver las notificaciones");
-              },
+              onPressed: () => Scaffold.of(context).openEndDrawer(),
             )
           ])),
     );
@@ -40,7 +35,6 @@ class _CustomAppbarState extends State<CustomAppbar> {
 
   Widget _crearInput() {
     var txt = TextEditingController();
-    var hola = true;
     // txt.addListener(() => setState(() {}));
     return TextField(
         controller: txt,
