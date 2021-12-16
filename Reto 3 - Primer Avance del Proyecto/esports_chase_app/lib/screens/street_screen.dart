@@ -6,8 +6,8 @@ import 'package:esports_chase_app/widgets/tournaments/tournaments_tab.dart';
 import 'package:esports_chase_app/widgets/custom_appbar.dart';
 import 'package:esports_chase_app/widgets/side_drawer.dart';
 
-class ValorantScreen extends StatelessWidget {
-  const ValorantScreen({Key? key}) : super(key: key);
+class StreetScreen extends StatelessWidget {
+  const StreetScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ class _TabsContent extends StatelessWidget {
       child: TabBarView(
         physics: BouncingScrollPhysics(),
         children: [
-          NewsTab(imageURL: "static/assets/B_Valorant.jpg", tabName: "Valorant"),
+          NewsTab(imageURL: "static/assets/B_Street.jpeg", tabName: "Street Fighter V"),
           TournamentsTab(),
           LiveTab(),
         ],

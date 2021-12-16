@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:esports_chase_app/router/tournament_arguments.dart';
 
 class TournamentsTab extends StatefulWidget {
   const TournamentsTab({Key? key}) : super(key: key);
@@ -66,12 +67,12 @@ class _TournamentBuilder extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 25),
       children: [
         (favourites.isNotEmpty) ? _TournamentCards(type: favourites) : Container(),
-        // Divider(),
         (international.isNotEmpty) ? _TournamentCards(type: international) : Container(),
-        // Divider(),
         (regional.isNotEmpty) ? _TournamentCards(type: regional) : Container(),
-        // Divider(),
         (national.isNotEmpty) ? _TournamentCards(type: national) : Container(),
+        Container(
+          height: 25,
+        ),
       ],
     );
   }
@@ -148,7 +149,9 @@ class _TCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        print("Se presionó el torneo $type número $index");
+        Navigator.pushNamed(context, "Tournament",
+            arguments: TournamentArguments(
+                type, (index + 1).toString(), "static/assets/B_Tournament.jpg", ""));
       },
       child: Container(
         decoration: BoxDecoration(

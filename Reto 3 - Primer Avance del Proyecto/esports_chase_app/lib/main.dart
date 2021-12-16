@@ -1,16 +1,22 @@
-import 'package:esports_chase_app/screens/news_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+
+import 'package:esports_chase_app/screens/news_screen.dart';
+import 'package:esports_chase_app/screens/tournament_screen.dart';
 import 'package:esports_chase_app/models/drawer_model.dart';
 import 'package:esports_chase_app/screens/about_screen.dart';
 import 'package:esports_chase_app/screens/config_screen.dart';
-
 import 'package:esports_chase_app/screens/feed_screen.dart';
 import 'package:esports_chase_app/screens/league_screen.dart';
 import 'package:esports_chase_app/screens/valorant_screen.dart';
 import 'package:esports_chase_app/shared_prefs/favourite_prefs.dart';
+import 'package:esports_chase_app/screens/dota_screen.dart';
+import 'package:esports_chase_app/screens/fortnite_screen.dart';
+import 'package:esports_chase_app/screens/overwatch_screen.dart';
+import 'package:esports_chase_app/screens/street_screen.dart';
 
-import 'package:provider/provider.dart';
+import 'shared_prefs/favourite_prefs.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -71,11 +77,16 @@ class MyApp extends StatelessWidget {
   Map<String, WidgetBuilder> getApplicationRoutes() {
     return <String, WidgetBuilder>{
       "Feed": (BuildContext context) => const FeedScreen(),
+      "Dota 2": (BuildContext context) => const DotaScreen(),
+      "Fortnite": (BuildContext context) => const FortniteScreen(),
       "League of Legends": (BuildContext context) => const LeagueScreen(),
+      "Overwatch": (BuildContext context) => const OverwatchScreen(),
+      "Street Fighter V": (BuildContext context) => const StreetScreen(),
       "Valorant": (BuildContext context) => const ValorantScreen(),
       "Preferences": (BuildContext context) => const ConfigScreen(),
       "About Us": (BuildContext context) => const AboutScreen(),
       "News": (BuildContext context) => const NewsScreen(),
+      "Tournament": (BuildContext context) => const TournamentScreen(),
     };
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:esports_chase_app/widgets/settings_appbar.dart';
 import 'package:esports_chase_app/widgets/side_drawer.dart';
 
 class AboutScreen extends StatelessWidget {
@@ -7,13 +8,11 @@ class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("About"),
-      ),
-      drawer: const SideDrawer(),
-      body: const Center(
-        child: Text("Llegó a las configuraciones"),
-      ),
-    );
+        drawer: const SideDrawer(),
+        body: Column(
+          children: const [
+            SettingsAppbar(tab: "About"),
+          ],
+        ));
   }
 }

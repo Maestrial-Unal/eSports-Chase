@@ -6,8 +6,28 @@
         },
         {
             "section": "Games",
+            "name": "Dota 2",
+            "icon": "static/assets/Dota.png"
+        },
+        {
+            "section": "Games",
+            "name": "Fortnite",
+            "icon": "static/assets/Fortnite.png"
+        },
+        {
+            "section": "Games",
             "name": "League of Legends",
             "icon": "static/assets/League.png"
+        },
+        {
+            "section": "Games",
+            "name": "Overwatch",
+            "icon": "static/assets/Overwatch.png"
+        },
+        {
+            "section": "Games",
+            "name": "Street Fighter V",
+            "icon": "static/assets/StreetFighter.png"
         },
         {
             "section": "Games",

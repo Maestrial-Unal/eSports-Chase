@@ -1,21 +1,21 @@
-import 'package:esports_chase_app/router/news_arguments.dart';
 import 'package:flutter/material.dart';
+import 'package:esports_chase_app/router/news_arguments.dart';
 
-class NewsTab extends StatefulWidget {
+class TournamentNews extends StatefulWidget {
   final String imageURL;
   final String tabName;
 
-  const NewsTab({
+  const TournamentNews({
     Key? key,
     required this.imageURL,
     required this.tabName,
   }) : super(key: key);
 
   @override
-  State<NewsTab> createState() => _NewsTabState();
+  State<TournamentNews> createState() => _TournamentNewsState();
 }
 
-class _NewsTabState extends State<NewsTab> with AutomaticKeepAliveClientMixin {
+class _TournamentNewsState extends State<TournamentNews> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build;

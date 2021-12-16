@@ -46,7 +46,7 @@ class _TabsContent extends StatelessWidget {
       child: TabBarView(
         physics: BouncingScrollPhysics(),
         children: [
-          NewsTab(imageURL: "static/assets/B_League.jpg", tabName: "Your Feed"),
+          NewsTab(imageURL: "static/assets/B_Feed.jpg", tabName: "Your Feed"),
           FeedTournamentsTab(),
           LiveTab(),
         ],

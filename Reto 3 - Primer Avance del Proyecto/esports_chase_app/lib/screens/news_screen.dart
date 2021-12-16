@@ -13,14 +13,11 @@ class NewsScreen extends StatelessWidget {
 
     return Scaffold(
         endDrawer: NewsInfo(number: args.number),
-        body: DefaultTabController(
-          length: 3,
-          child: Column(
-            children: [
-              const NewsAppbar(),
-              NewsArticle(number: args.number),
-            ],
-          ),
+        body: Column(
+          children: [
+            const NewsAppbar(),
+            NewsArticle(number: args.number),
+          ],
         ));
   }
 }
