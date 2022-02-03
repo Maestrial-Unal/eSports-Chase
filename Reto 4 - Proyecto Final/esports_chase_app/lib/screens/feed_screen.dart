@@ -55,7 +55,9 @@ class _TabsContent extends StatelessWidget {
             tabName: "Your Feed",
             newsData: [],
           ),
-          FeedTournamentsTab(),
+          FeedTournamentsTab(
+            tournaments: [],
+          ),
           LiveTab(),
         ],
       ),

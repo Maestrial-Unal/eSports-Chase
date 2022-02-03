@@ -1,8 +1,8 @@
+import 'package:esports_chase_app/models/tournament_model.dart';
+
 class TournamentArguments {
-  final String type;
-  final String name;
-  final String imageURL;
+  final TournamentModel data;
   final String url;
 
-  TournamentArguments(this.type, this.name, this.imageURL, this.url);
+  TournamentArguments(this.data, this.url);
 }

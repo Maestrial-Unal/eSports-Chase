@@ -1,8 +1,12 @@
 import 'package:esports_chase_app/router/tournament_arguments.dart';
 import 'package:flutter/material.dart';
 
+import 'package:esports_chase_app/models/tournament_model.dart';
+
 class FeedTournamentsTab extends StatefulWidget {
-  const FeedTournamentsTab({Key? key}) : super(key: key);
+  final List<TournamentModel> tournaments;
+  const FeedTournamentsTab({Key? key, required this.tournaments})
+      : super(key: key);
 
   @override
   State<FeedTournamentsTab> createState() => _FeedTournamentsTabState();
@@ -13,15 +17,7 @@ class _FeedTournamentsTabState extends State<FeedTournamentsTab>
   @override
   Widget build(BuildContext context) {
     super.build;
-    List<String> tournaments = [
-      "International",
-      "Regional",
-      "Regional",
-      "National",
-      "National",
-      "National",
-    ];
-    return _TournamentBuilder(tournaments: tournaments);
+    return _TournamentBuilder(tournaments: widget.tournaments);
   }
 
   @override
@@ -34,17 +30,17 @@ class _TournamentBuilder extends StatelessWidget {
     required this.tournaments,
   }) : super(key: key);
 
-  final List<String> tournaments;
+  final List<TournamentModel> tournaments;
 
   @override
   Widget build(BuildContext context) {
-    List<String> favourites = [];
-    List<String> international = [];
-    List<String> regional = [];
-    List<String> national = [];
+    List<TournamentModel> favourites = [];
+    List<TournamentModel> international = [];
+    List<TournamentModel> regional = [];
+    List<TournamentModel> national = [];
 
     for (int i = 0; i < tournaments.length; i++) {
-      switch (tournaments[i]) {
+      switch (tournaments[i].name) {
         case "Favourite":
           favourites.add(tournaments[i]);
           break;
@@ -63,10 +59,18 @@ class _TournamentBuilder extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 25),
       children: [
-        (favourites.isNotEmpty) ? _TournamentCards(type: favourites) : Container(),
-        (international.isNotEmpty) ? _TournamentCards(type: international) : Container(),
-        (regional.isNotEmpty) ? _TournamentCards(type: regional) : Container(),
-        (national.isNotEmpty) ? _TournamentCards(type: national) : Container(),
+        (favourites.isNotEmpty)
+            ? _TournamentCards(tournaments: favourites)
+            : Container(),
+        (international.isNotEmpty)
+            ? _TournamentCards(tournaments: international)
+            : Container(),
+        (regional.isNotEmpty)
+            ? _TournamentCards(tournaments: regional)
+            : Container(),
+        (national.isNotEmpty)
+            ? _TournamentCards(tournaments: national)
+            : Container(),
         Container(
           height: 25,
         ),
@@ -78,22 +82,22 @@ class _TournamentBuilder extends StatelessWidget {
 class _TournamentCards extends StatelessWidget {
   const _TournamentCards({
     Key? key,
-    required this.type,
+    required this.tournaments,
   }) : super(key: key);
 
-  final List<String> type;
+  final List<TournamentModel> tournaments;
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> typeCards = [];
-    for (int i = 0; i < type.length; i++) {
+    List<Widget> tournamentsCards = [];
+    for (int i = 0; i < tournaments.length; i++) {
       bool isFirst = false;
       bool isLast = false;
       if (i == 0) isFirst = true;
-      if (i == type.length - 1) isLast = true;
+      if (i == tournaments.length - 1) isLast = true;
 
-      typeCards.add(_TCard(
-        type: type[i],
+      tournamentsCards.add(_TCard(
+        tournament: tournaments[i],
         index: i,
         isFirst: isFirst,
         isLast: isLast,
@@ -107,12 +111,12 @@ class _TournamentCards extends StatelessWidget {
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              type[0],
+              tournaments[0].type,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
           ),
         ),
-        ...typeCards,
+        ...tournamentsCards,
       ],
     );
   }
@@ -121,13 +125,13 @@ class _TournamentCards extends StatelessWidget {
 class _TCard extends StatelessWidget {
   const _TCard({
     Key? key,
-    required this.type,
+    required this.tournament,
     required this.index,
     required this.isFirst,
     required this.isLast,
   }) : super(key: key);
 
-  final String type;
+  final TournamentModel tournament;
   final int index;
   final bool isFirst;
   final bool isLast;
@@ -147,8 +151,7 @@ class _TCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, "Tournament",
-            arguments: TournamentArguments(
-                type, (index + 1).toString(), "static/assets/B_Tournament.jpg", ""));
+            arguments: TournamentArguments(tournament, ""));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -160,7 +163,7 @@ class _TCard extends StatelessWidget {
         ),
         child: Container(
           height: 80,
-          padding: const EdgeInsets.only(left: 5, right: 10),
+          padding: const EdgeInsets.only(left: 15, right: 15),
           decoration: decoration,
           child: Row(
             children: [
@@ -173,27 +176,33 @@ class _TCard extends StatelessWidget {
                 onPressed: () {
                   print("Toggle Facourite $index");
                 },
-                icon: const Icon(
-                  Icons.star_rounded,
-                  color: Color.fromRGBO(229, 182, 11, 1),
+                icon: Icon(
+                  (tournament.type == "Favourite")
+                      ? Icons.star_rounded
+                      : Icons.star_border_rounded,
+                  color: const Color.fromRGBO(229, 182, 11, 1),
                 ),
               ),
-              const Image(
-                image: AssetImage("static/assets/loading.gif"),
-                // height: 60,
-                width: 30,
+              Container(
+                margin: const EdgeInsets.only(right: 15),
+                child: Image.network(
+                  tournament.icon,
+                  fit: BoxFit.cover,
+                ),
+                height: 70,
+                width: 70,
               ),
               Expanded(
                 child: Container(
-                  margin: const EdgeInsets.only(left: 10, right: 10),
+                  margin: const EdgeInsets.only(left: 15, right: 15),
                   child: Text(
-                    "$type Tournament",
+                    tournament.name,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
                       height: 1.5,
                     ),
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.left,
                   ),
                 ),
               ),

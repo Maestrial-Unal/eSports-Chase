@@ -1,18 +1,15 @@
+import 'package:esports_chase_app/models/tournament_model.dart';
 import 'package:flutter/material.dart';
 import 'package:esports_chase_app/router/news_arguments.dart';
 import 'package:esports_chase_app/models/new_model.dart';
 
 class TournamentNews extends StatefulWidget {
-  final String imageURL;
-  final String tabName;
+  final TournamentModel tournament;
   final List<NewModel> newsData;
 
-  const TournamentNews({
-    Key? key,
-    required this.imageURL,
-    required this.tabName,
-    required this.newsData,
-  }) : super(key: key);
+  const TournamentNews(
+      {Key? key, required this.tournament, required this.newsData})
+      : super(key: key);
 
   @override
   State<TournamentNews> createState() => _TournamentNewsState();
@@ -26,7 +23,8 @@ class _TournamentNewsState extends State<TournamentNews>
     return ListView(
       padding: EdgeInsets.zero,
       children: [
-        _NewsHeader(imageURL: widget.imageURL, tabName: widget.tabName),
+        _NewsHeader(
+            imageURL: widget.tournament.image, tabName: widget.tournament.name),
         _NewsBody(
           newsData: widget.newsData,
         ),
@@ -56,7 +54,15 @@ class _NewsHeader extends StatelessWidget {
         ColorFiltered(
           colorFilter: const ColorFilter.mode(
               Color.fromRGBO(17, 24, 33, 0.5), BlendMode.srcOver),
-          child: Image(image: AssetImage(imageURL)),
+          child: Container(
+            margin: const EdgeInsets.only(right: 10),
+            child: Image.network(
+              imageURL,
+              fit: BoxFit.cover,
+            ),
+            width: width,
+            height: width * (850 / 1920),
+          ),
         ),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 30),

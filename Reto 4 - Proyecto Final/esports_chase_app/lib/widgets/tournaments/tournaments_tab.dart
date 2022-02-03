@@ -41,7 +41,7 @@ class _TournamentBuilder extends StatelessWidget {
     List<TournamentModel> national = [];
 
     for (int i = 0; i < tournaments.length; i++) {
-      switch (tournaments[i].name) {
+      switch (tournaments[i].type) {
         case "Favourite":
           favourites.add(tournaments[i]);
           break;
@@ -152,8 +152,7 @@ class _TCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, "Tournament",
-            arguments: TournamentArguments(tournament.type, tournament.name,
-                "static/assets/B_Tournament.jpg", ""));
+            arguments: TournamentArguments(tournament, ""));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -165,7 +164,7 @@ class _TCard extends StatelessWidget {
         ),
         child: Container(
           height: 80,
-          padding: const EdgeInsets.only(left: 5, right: 10),
+          padding: const EdgeInsets.only(left: 15, right: 15),
           decoration: decoration,
           child: Row(
             children: [
@@ -185,10 +184,18 @@ class _TCard extends StatelessWidget {
                   color: const Color.fromRGBO(229, 182, 11, 1),
                 ),
               ),
-              Image.network(tournament.image, width: 50),
+              Container(
+                margin: const EdgeInsets.only(right: 15),
+                child: Image.network(
+                  tournament.icon,
+                  fit: BoxFit.cover,
+                ),
+                height: 60,
+                width: 60,
+              ),
               Expanded(
                 child: Container(
-                  margin: const EdgeInsets.only(left: 40, right: 10),
+                  margin: const EdgeInsets.only(left: 15, right: 15),
                   child: Text(
                     tournament.name,
                     style: const TextStyle(

@@ -67,9 +67,13 @@ class _TabsContent extends StatelessWidget {
                   newsData: transformDataNews(snapshot.data),
                 );
               }),
-          TournamentsTab(
-            tournaments: transformData(""),
-          ),
+          FutureBuilder(
+              future: esportsChaseService.getRawTournaments("esport=LOL"),
+              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                return TournamentsTab(
+                  tournaments: transformDataTournaments(snapshot.data),
+                );
+              }),
           const LiveTab(),
         ],
       ),
@@ -77,26 +81,25 @@ class _TabsContent extends StatelessWidget {
   }
 }
 
-List<TournamentModel> transformData(String? raw) {
-  List<TournamentModel> torneosMelos = [];
-  torneosMelos.add(TournamentModel(
-      "International",
-      "12054",
-      "Worlds LOL",
-      "https://static.wikia.nocookie.net/logopedia/images/4/42/LOL_Worlds_icon.png/revision/latest/scale-to-width-down/250?cb=20200304185510",
-      "WORLD",
-      "0"));
+// List<TournamentModel> transformData(String? raw) {
+//   List<TournamentModel> torneosMelos = [];
+//   torneosMelos.add(TournamentModel(
+//       "International",
+//       "12054",
+//       "Worlds LOL",
+//       "https://static.wikia.nocookie.net/logopedia/images/4/42/LOL_Worlds_icon.png/revision/latest/scale-to-width-down/250?cb=20200304185510",
+//       "WORLD"));
 
-  torneosMelos.add(TournamentModel(
-      "International",
-      "12051",
-      "MSI",
-      "https://liquipedia.net/commons/images/thumb/d/d7/MSI_crest.png/600px-MSI_crest.png",
-      "WORLD",
-      "0"));
+//   torneosMelos.add(TournamentModel(
+//     "International",
+//     "12051",
+//     "MSI",
+//     "https://liquipedia.net/commons/images/thumb/d/d7/MSI_crest.png/600px-MSI_crest.png",
+//     "WORLD",
+//   ));
 
-  return torneosMelos;
-}
+//   return torneosMelos;
+// }
 
 
 

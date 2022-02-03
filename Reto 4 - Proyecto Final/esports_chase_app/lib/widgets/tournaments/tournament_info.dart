@@ -1,10 +1,10 @@
+import 'package:esports_chase_app/models/tournament_model.dart';
 import 'package:flutter/material.dart';
 
 class TournamentInfo extends StatelessWidget {
-  const TournamentInfo({Key? key, required this.type, required this.name}) : super(key: key);
+  const TournamentInfo({Key? key, required this.data}) : super(key: key);
 
-  final String type;
-  final String name;
+  final TournamentModel data;
 
   @override
   Widget build(BuildContext context) {
@@ -22,17 +22,12 @@ class TournamentInfo extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 physics: const BouncingScrollPhysics(),
                 children: [
-                  _InformationTile(title: "Name", info: "$type Tournament $name"),
-                  const _InformationTile(title: "Status", info: "Active"),
-                  const _InformationTile(
-                      title: "Description",
-                      info:
-                          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ultrices sapien blandit leo auctor varius. Nam gravida eget magna sed vestibulum. Vestibulum quis ipsum dignissim, faucibus leo a, scelerisque tortor."),
-                  const _InformationTile(
-                      //ESTA SE PUEDE CAMBIAR PARA MOSTRAR EL LOGO DEL EQUIPO ANTES DE SU NOMBRE
-                      title: "Participants",
-                      info:
-                          "Team Name 1, Team Name 2, Team Name 3, Team Name 4, Team Name 5, Team Name 6, Team Name 7, Team Name 8, Team Name 9, Team Name 10"),
+                  _InformationTile(
+                      title: "Name",
+                      info: "${data.type} Tournament ${data.name}"),
+                  _InformationTile(title: "Status", info: data.status),
+                  _InformationTile(
+                      title: "Description", info: data.description),
                 ],
               ),
             )

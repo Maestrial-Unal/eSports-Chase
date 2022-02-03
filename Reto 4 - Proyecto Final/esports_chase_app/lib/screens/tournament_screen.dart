@@ -1,3 +1,4 @@
+import 'package:esports_chase_app/models/tournament_model.dart';
 import 'package:flutter/material.dart';
 import 'package:esports_chase_app/widgets/tournaments/tournament_standings.dart';
 import 'package:esports_chase_app/widgets/tournaments/tournament_appbar.dart';
@@ -19,7 +20,7 @@ class TournamentScreen extends StatelessWidget {
         ModalRoute.of(context)!.settings.arguments as TournamentArguments;
 
     return Scaffold(
-        endDrawer: TournamentInfo(type: args.type, name: args.name),
+        endDrawer: TournamentInfo(data: args.data),
         body: DefaultTabController(
           length: 3,
           child: Column(
@@ -35,8 +36,7 @@ class TournamentScreen extends StatelessWidget {
                   Tab(text: 'Standings')
                 ],
               ),
-              _TabsContent(
-                  type: args.type, name: args.name, imageURL: args.imageURL)
+              _TabsContent(data: args.data)
             ],
           ),
         ));
@@ -44,16 +44,8 @@ class TournamentScreen extends StatelessWidget {
 }
 
 class _TabsContent extends StatelessWidget {
-  const _TabsContent({
-    Key? key,
-    required this.type,
-    required this.name,
-    required this.imageURL,
-  }) : super(key: key);
-
-  final String type;
-  final String name;
-  final String imageURL;
+  const _TabsContent({Key? key, required this.data}) : super(key: key);
+  final TournamentModel data;
 
   @override
   Widget build(BuildContext context) {
@@ -63,15 +55,14 @@ class _TabsContent extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         children: [
           FutureBuilder(
-              future: esportsChaseService.getRawNews("tag=$name"),
+              future: esportsChaseService.getRawNews("tag=${data.name}"),
               builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                 return TournamentNews(
-                  imageURL: "static/assets/B_League.jpg",
-                  tabName: name,
+                  tournament: data,
                   newsData: transformDataNews(snapshot.data),
                 );
               }),
-          TournamentSchedule(name: "Tournament $name"),
+          TournamentSchedule(name: "Tournament $data.name"),
           const TournamentStandings(),
         ],
       ),

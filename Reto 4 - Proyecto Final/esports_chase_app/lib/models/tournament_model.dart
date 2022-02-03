@@ -1,11 +1,14 @@
 class TournamentModel {
-  final String type;
   final String id;
+  final String type;
   final String name;
   final String image;
+  final String icon;
   final String region;
-  final String priority;
+  final String esport;
+  final String description;
+  final String status;
 
-  TournamentModel(
-      this.type, this.id, this.name, this.image, this.region, this.priority);
+  TournamentModel(this.id, this.type, this.name, this.image, this.icon,
+      this.region, this.esport, this.description, this.status);
 }
