@@ -6,6 +6,11 @@ import 'package:esports_chase_app/widgets/news/news_tab.dart';
 import 'package:esports_chase_app/widgets/custom_appbar.dart';
 import 'package:esports_chase_app/widgets/side_drawer.dart';
 
+import 'package:esports_chase_app/services/esports_chase_api.dart';
+import 'package:esports_chase_app/utils/transform_data.dart';
+
+import 'dart:developer';
+
 class FeedScreen extends StatelessWidget {
   const FeedScreen({Key? key}) : super(key: key);
 
@@ -53,12 +58,10 @@ class _TabsContent extends StatelessWidget {
           NewsTab(
             imageURL: "static/assets/B_Feed.jpg",
             tabName: "Your Feed",
-            newsData: [],
+            screen: "feed",
           ),
-          FeedTournamentsTab(
-            tournaments: [],
-          ),
-          LiveTab(),
+          FeedTournamentsTab(),
+          LiveTab(screen: "feed"),
         ],
       ),
     );

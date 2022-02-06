@@ -1,5 +1,6 @@
 {
-    "drawer": [{
+    "drawer": [
+        {
             "section": "Feed",
             "name": "Feed",
             "icon": "feed"

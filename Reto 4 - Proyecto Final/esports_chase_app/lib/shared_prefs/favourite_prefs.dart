@@ -1,7 +1,8 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FavouritePreferences {
-  static final FavouritePreferences _instance = FavouritePreferences._internal();
+  static final FavouritePreferences _instance =
+      FavouritePreferences._internal();
 
   factory FavouritePreferences() {
     return _instance;

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:esports_chase_app/models/tournament_model.dart';
 
 class TournamentStandings extends StatelessWidget {
-  const TournamentStandings({Key? key}) : super(key: key);
-
+  const TournamentStandings({Key? key, required this.tournamentData})
+      : super(key: key);
+  final TournamentModel tournamentData;
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -10,7 +12,9 @@ class TournamentStandings extends StatelessWidget {
       children: [
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 0),
-          child: const _GroupStageCard(),
+          child: _GroupStageCard(
+            tournamentData: tournamentData,
+          ),
         )
       ],
     );
@@ -18,81 +22,40 @@ class TournamentStandings extends StatelessWidget {
 }
 
 class _GroupStageCard extends StatelessWidget {
-  const _GroupStageCard({
-    Key? key,
-  }) : super(key: key);
-
+  const _GroupStageCard({Key? key, required this.tournamentData})
+      : super(key: key);
+  final TournamentModel tournamentData;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          margin: const EdgeInsets.only(bottom: 14),
-          child: Container(
-            margin: const EdgeInsets.only(bottom: 10),
-            child: const Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Group Stage",
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 24,
-                ),
+    List<Widget> teamsCards = [
+      Container(
+        margin: const EdgeInsets.only(bottom: 14),
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 10),
+          child: const Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Group Stage",
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 24,
               ),
             ),
           ),
         ),
-        const _StandingCard(
-          standing: "1",
-          image: "static/assets/loading.gif",
-          name: "Team 1 Name",
-        ),
-        const _StandingCard(
-          standing: "2",
-          image: "static/assets/loading.gif",
-          name: "Team 2 Name",
-        ),
-        const _StandingCard(
-          standing: "3",
-          image: "static/assets/loading.gif",
-          name: "Team 3 Name",
-        ),
-        const _StandingCard(
-          standing: "4",
-          image: "static/assets/loading.gif",
-          name: "Team 4 Name",
-        ),
-        const _StandingCard(
-          standing: "5",
-          image: "static/assets/loading.gif",
-          name: "Team 5 Name",
-        ),
-        const _StandingCard(
-          standing: "6",
-          image: "static/assets/loading.gif",
-          name: "Team 6 Name",
-        ),
-        const _StandingCard(
-          standing: "7",
-          image: "static/assets/loading.gif",
-          name: "Team 7 Name",
-        ),
-        const _StandingCard(
-          standing: "8",
-          image: "static/assets/loading.gif",
-          name: "Team 8 Name",
-        ),
-        const _StandingCard(
-          standing: "9",
-          image: "static/assets/loading.gif",
-          name: "Team 9 Name",
-        ),
-        const _StandingCard(
-          standing: "10",
-          image: "static/assets/loading.gif",
-          name: "Team 10 Name",
-        ),
-      ],
+      )
+    ];
+
+    for (int i = 0; i < tournamentData.teams.length; i++) {
+      teamsCards.add(_StandingCard(
+        standing: i.toString(),
+        image: tournamentData.teams_icons[i],
+        name: tournamentData.teams[i],
+      ));
+    }
+
+    return Column(
+      children: teamsCards,
     );
   }
 }
@@ -134,12 +97,17 @@ class _StandingCard extends StatelessWidget {
               width: 1,
               height: 45,
             ),
-            Image(
-              image: AssetImage(image),
-              height: 45,
-            ),
             Container(
               margin: const EdgeInsets.only(left: 10),
+              child: Image.network(
+                image,
+                fit: BoxFit.contain,
+              ),
+              height: 45,
+              width: 45,
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 20),
               child: Text(name,
                   style: const TextStyle(
                     fontSize: 20,

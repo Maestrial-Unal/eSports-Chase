@@ -53,12 +53,10 @@ class _TabsContent extends StatelessWidget {
           NewsTab(
             imageURL: "static/assets/B_Valorant.jpg",
             tabName: "Valorant",
-            newsData: [],
+            screen: "Valorant",
           ),
-          TournamentsTab(
-            tournaments: [],
-          ),
-          LiveTab(),
+          TournamentsTab(esport: "Valorant"),
+          LiveTab(screen: "Valorant"),
         ],
       ),
     );

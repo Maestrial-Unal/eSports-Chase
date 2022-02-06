@@ -6,9 +6,6 @@ import 'package:esports_chase_app/widgets/tournaments/tournaments_tab.dart';
 import 'package:esports_chase_app/widgets/custom_appbar.dart';
 import 'package:esports_chase_app/widgets/side_drawer.dart';
 
-import 'package:esports_chase_app/services/esports_chase_api.dart';
-import 'package:esports_chase_app/utils/transform_data.dart';
-
 class DotaScreen extends StatelessWidget {
   const DotaScreen({Key? key}) : super(key: key);
 
@@ -49,24 +46,19 @@ class _TabsContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    EsportsChaseHttpService esportsChaseService = EsportsChaseHttpService();
-    return Expanded(
+    return const Expanded(
       child: TabBarView(
-        physics: const BouncingScrollPhysics(),
+        physics: BouncingScrollPhysics(),
         children: [
-          FutureBuilder(
-              future: esportsChaseService.getRawNews("esport=DOTA"),
-              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                return NewsTab(
-                  imageURL: "static/assets/B_Dota.jpg",
-                  tabName: "Dota 2",
-                  newsData: transformDataNews(snapshot.data),
-                );
-              }),
-          const TournamentsTab(
-            tournaments: [],
+          NewsTab(
+            imageURL: "static/assets/B_Dota.jpg",
+            tabName: "Dota 2",
+            screen: "Dota 2",
           ),
-          const LiveTab(),
+          TournamentsTab(
+            esport: "Dota 2",
+          ),
+          LiveTab(screen: "Dota 2"),
         ],
       ),
     );

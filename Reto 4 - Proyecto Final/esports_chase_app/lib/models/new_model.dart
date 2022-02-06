@@ -1,4 +1,5 @@
 class NewModel {
+  final String id;
   final String title;
   final String image;
   final String description;
@@ -7,8 +8,8 @@ class NewModel {
   final String infoAuthor;
   final List<String> tags;
 
-  NewModel(this.title, this.image, this.description, this.article, this.author,
-      this.infoAuthor, this.tags);
+  NewModel(this.id, this.title, this.image, this.description, this.article,
+      this.author, this.infoAuthor, this.tags);
 
   String generateStringTags() {
     String stringTags = "";

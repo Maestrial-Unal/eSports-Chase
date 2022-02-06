@@ -53,12 +53,10 @@ class _TabsContent extends StatelessWidget {
           NewsTab(
             imageURL: "static/assets/B_Street.jpeg",
             tabName: "Street Fighter V",
-            newsData: [],
+            screen: "Street Fighter V",
           ),
-          TournamentsTab(
-            tournaments: [],
-          ),
-          LiveTab(),
+          TournamentsTab(esport: "Street Fighter V"),
+          LiveTab(screen: "Street Fighter V"),
         ],
       ),
     );

@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:esports_chase_app/router/news_arguments.dart';
 import 'package:esports_chase_app/models/new_model.dart';
 
+import 'package:esports_chase_app/services/esports_chase_api.dart';
+import 'package:esports_chase_app/utils/transform_data.dart';
+
 class TournamentNews extends StatefulWidget {
   final TournamentModel tournament;
-  final List<NewModel> newsData;
-
-  const TournamentNews(
-      {Key? key, required this.tournament, required this.newsData})
-      : super(key: key);
+  const TournamentNews({Key? key, required this.tournament}) : super(key: key);
 
   @override
   State<TournamentNews> createState() => _TournamentNewsState();
@@ -17,18 +16,34 @@ class TournamentNews extends StatefulWidget {
 
 class _TournamentNewsState extends State<TournamentNews>
     with AutomaticKeepAliveClientMixin {
+  Future<Null> _refreshLocalGallery() async {
+    setState(() {});
+    return Future.delayed(const Duration(seconds: 1));
+  }
+
   @override
   Widget build(BuildContext context) {
+    EsportsChaseHttpService esportsChaseService = EsportsChaseHttpService();
+    String query = "?tag=${widget.tournament.name}";
+
     super.build;
-    return ListView(
-      padding: EdgeInsets.zero,
-      children: [
-        _NewsHeader(
-            imageURL: widget.tournament.image, tabName: widget.tournament.name),
-        _NewsBody(
-          newsData: widget.newsData,
-        ),
-      ],
+    return RefreshIndicator(
+      onRefresh: _refreshLocalGallery,
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          _NewsHeader(
+              imageURL: widget.tournament.image,
+              tabName: widget.tournament.name),
+          FutureBuilder(
+              future: esportsChaseService.getRawNews(query),
+              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                return _NewsBody(
+                  newsData: transformDataNews(snapshot.data),
+                );
+              }),
+        ],
+      ),
     );
   }
 

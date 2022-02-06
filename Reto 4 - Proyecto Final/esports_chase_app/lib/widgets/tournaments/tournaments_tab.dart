@@ -2,12 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:esports_chase_app/router/tournament_arguments.dart';
-
 import 'package:esports_chase_app/models/tournament_model.dart';
 
+import 'package:esports_chase_app/services/esports_chase_api.dart';
+import 'package:esports_chase_app/utils/transform_data.dart';
+import 'package:esports_chase_app/utils/preferences_http.dart';
+
 class TournamentsTab extends StatefulWidget {
-  final List<TournamentModel> tournaments;
-  const TournamentsTab({Key? key, required this.tournaments}) : super(key: key);
+  final String esport;
+  const TournamentsTab({Key? key, required this.esport}) : super(key: key);
 
   @override
   State<TournamentsTab> createState() => _TournamentsTabState();
@@ -15,69 +18,74 @@ class TournamentsTab extends StatefulWidget {
 
 class _TournamentsTabState extends State<TournamentsTab>
     with AutomaticKeepAliveClientMixin {
+  Future<Null> _refreshLocalGallery() async {
+    setState(() {});
+    return Future.delayed(const Duration(seconds: 1));
+  }
+
   @override
   Widget build(BuildContext context) {
+    EsportsChaseHttpService esportsChaseService = EsportsChaseHttpService();
+
     super.build;
-    return _TournamentBuilder(tournaments: widget.tournaments);
+    return RefreshIndicator(
+      onRefresh: _refreshLocalGallery,
+      child: FutureBuilder(
+        future:
+            esportsChaseService.getRawTournaments("?esport=${widget.esport}"),
+        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          List<TournamentModel> tournaments =
+              transformDataTournaments(snapshot.data);
+
+          List<TournamentModel> favourites = [];
+          List<TournamentModel> international = [];
+          List<TournamentModel> regional = [];
+          List<TournamentModel> national = [];
+
+          for (int i = 0; i < tournaments.length; i++) {
+            switch (tournaments[i].type) {
+              case "Favourite":
+                favourites.add(tournaments[i]);
+                break;
+              case "International":
+                international.add(tournaments[i]);
+                break;
+              case "Regional":
+                regional.add(tournaments[i]);
+                break;
+              default:
+                national.add(tournaments[i]);
+                break;
+            }
+          }
+
+          return ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            children: [
+              (favourites.isNotEmpty)
+                  ? _TournamentCards(tournaments: favourites)
+                  : Container(),
+              (international.isNotEmpty)
+                  ? _TournamentCards(tournaments: international)
+                  : Container(),
+              (regional.isNotEmpty)
+                  ? _TournamentCards(tournaments: regional)
+                  : Container(),
+              (national.isNotEmpty)
+                  ? _TournamentCards(tournaments: national)
+                  : Container(),
+              Container(
+                height: 25,
+              ),
+            ],
+          );
+        },
+      ),
+    );
   }
 
   @override
   bool get wantKeepAlive => true;
-}
-
-class _TournamentBuilder extends StatelessWidget {
-  const _TournamentBuilder({
-    Key? key,
-    required this.tournaments,
-  }) : super(key: key);
-
-  final List<TournamentModel> tournaments;
-
-  @override
-  Widget build(BuildContext context) {
-    List<TournamentModel> favourites = [];
-    List<TournamentModel> international = [];
-    List<TournamentModel> regional = [];
-    List<TournamentModel> national = [];
-
-    for (int i = 0; i < tournaments.length; i++) {
-      switch (tournaments[i].type) {
-        case "Favourite":
-          favourites.add(tournaments[i]);
-          break;
-        case "International":
-          international.add(tournaments[i]);
-          break;
-        case "Regional":
-          regional.add(tournaments[i]);
-          break;
-        default:
-          national.add(tournaments[i]);
-          break;
-      }
-    }
-
-    return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
-      children: [
-        (favourites.isNotEmpty)
-            ? _TournamentCards(tournaments: favourites)
-            : Container(),
-        (international.isNotEmpty)
-            ? _TournamentCards(tournaments: international)
-            : Container(),
-        (regional.isNotEmpty)
-            ? _TournamentCards(tournaments: regional)
-            : Container(),
-        (national.isNotEmpty)
-            ? _TournamentCards(tournaments: national)
-            : Container(),
-        Container(
-          height: 25,
-        ),
-      ],
-    );
-  }
 }
 
 class _TournamentCards extends StatelessWidget {

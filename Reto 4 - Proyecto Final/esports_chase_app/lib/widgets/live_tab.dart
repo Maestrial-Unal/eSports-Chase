@@ -1,26 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:esports_chase_app/models/next_match_model.dart';
+import 'package:esports_chase_app/models/live_match_model.dart';
 
-class LiveTab extends StatelessWidget {
-  const LiveTab({Key? key}) : super(key: key);
+import 'package:esports_chase_app/services/esports_chase_api.dart';
+import 'package:esports_chase_app/utils/transform_data.dart';
+
+import 'package:esports_chase_app/utils/preferences_http.dart';
+
+class LiveTab extends StatefulWidget {
+  const LiveTab({Key? key, required this.screen}) : super(key: key);
+  final String screen;
+  @override
+  State<LiveTab> createState() => _LiveTabState();
+}
+
+class _LiveTabState extends State<LiveTab> with AutomaticKeepAliveClientMixin {
+  Future<Null> _refreshLocalGallery() async {
+    setState(() {});
+    return Future.delayed(const Duration(seconds: 1));
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: const [
-        _LiveMatch(),
-        _NextMatch(),
-        _NextMatch(),
-        _NextMatch(),
-        _NextMatch(),
-      ],
+    EsportsChaseHttpService esportsChaseService = EsportsChaseHttpService();
+    String query = "";
+    if (widget.screen != "feed") {
+      query = "?esport=${widget.screen}";
+    } else {
+      query = getQuery();
+    }
+    Future<String> futureNextMatchs =
+        esportsChaseService.getRawNextMatchs(query);
+    Future<String> futureLiveMatchs =
+        esportsChaseService.getRawLiveMatchs(query);
+
+    super.build;
+    return FutureBuilder(
+      future: Future.wait([futureLiveMatchs, futureNextMatchs]),
+      builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+        List<LiveMatchModel> liveMatchs =
+            transformDataLiveMatch(snapshot.data?[0]);
+        List<NextMatchModel> nextMatchs =
+            transformDataNextMatch(snapshot.data?[1]);
+
+        List<Widget> matchs = [];
+        for (int i = 0; i < liveMatchs.length; i++) {
+          matchs.add(_LiveMatch(matchData: liveMatchs[i]));
+        }
+        for (int i = 0; i < nextMatchs.length; i++) {
+          matchs.add(_NextMatch(matchData: nextMatchs[i]));
+        }
+        return RefreshIndicator(
+            onRefresh: _refreshLocalGallery,
+            child: ListView(padding: EdgeInsets.zero, children: matchs));
+      },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class _LiveMatch extends StatelessWidget {
   const _LiveMatch({
     Key? key,
+    required this.matchData,
   }) : super(key: key);
+
+  final LiveMatchModel matchData;
 
   @override
   Widget build(BuildContext context) {
@@ -55,18 +102,18 @@ class _LiveMatch extends StatelessWidget {
             height: 8,
             width: 8,
           ),
-          const Text(
-            "Live",
-            style: TextStyle(
+          Text(
+            "Live: ${matchData.time}",
+            style: const TextStyle(
               decoration: TextDecoration.underline,
             ),
           ),
-          const Expanded(
+          Expanded(
             child: Align(
               alignment: Alignment.centerRight,
               child: Text(
-                "Tournament Name",
-                style: TextStyle(
+                "Tournament ${matchData.tournament}",
+                style: const TextStyle(
                   color: Color.fromRGBO(255, 255, 255, 0.5),
                   decoration: TextDecoration.underline,
                 ),
@@ -83,12 +130,10 @@ class _LiveMatch extends StatelessWidget {
       children: [
         Expanded(
           child: Column(
-            children: const [
-              Image(
-                image: AssetImage("static/assets/loading.gif"),
-                width: 100,
-              ),
-              Text("Team 1")
+            children: [
+              Image.network(matchData.team_1_icon,
+                  fit: BoxFit.contain, height: 90, width: 90),
+              Text(matchData.team_1)
             ],
           ),
         ),
@@ -98,12 +143,10 @@ class _LiveMatch extends StatelessWidget {
         ),
         Expanded(
           child: Column(
-            children: const [
-              Image(
-                image: AssetImage("static/assets/loading.gif"),
-                width: 100,
-              ),
-              Text("Team 2")
+            children: [
+              Image.network(matchData.team_2_icon,
+                  fit: BoxFit.contain, height: 90, width: 90),
+              Text(matchData.team_2)
             ],
           ),
         ),
@@ -133,6 +176,28 @@ class _LiveMatch extends StatelessWidget {
   }
 
   Widget _matchInfo() {
+    List<Widget> leftStats = [
+      _statTile(
+        matchData.stats_name[0],
+        matchData.stats_team_1[0],
+      )
+    ];
+    List<Widget> rightStats = [
+      _statTileR(
+        matchData.stats_name[0],
+        matchData.stats_team_2[0],
+      )
+    ];
+    for (int i = 1; i < matchData.stats_name.length; i++) {
+      leftStats.add(const SizedBox(height: 10));
+      leftStats
+          .add(_statTile(matchData.stats_name[i], matchData.stats_team_1[i]));
+
+      rightStats.add(const SizedBox(height: 10));
+      rightStats
+          .add(_statTileR(matchData.stats_name[i], matchData.stats_team_2[i]));
+    }
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 20),
       child: Row(
@@ -148,19 +213,7 @@ class _LiveMatch extends StatelessWidget {
               ),
               padding: const EdgeInsets.symmetric(horizontal: 22),
               child: Column(
-                children: [
-                  _statTile(1),
-                  const SizedBox(height: 10),
-                  _statTile(2),
-                  const SizedBox(height: 10),
-                  _statTile(3),
-                  const SizedBox(height: 10),
-                  _statTile(4),
-                  const SizedBox(height: 10),
-                  _statTile(5),
-                  const SizedBox(height: 10),
-                  _statTile(6),
-                ],
+                children: leftStats,
               ),
             ),
           ),
@@ -168,19 +221,7 @@ class _LiveMatch extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 22),
               child: Column(
-                children: [
-                  _statTileR(1),
-                  const SizedBox(height: 10),
-                  _statTileR(2),
-                  const SizedBox(height: 10),
-                  _statTileR(3),
-                  const SizedBox(height: 10),
-                  _statTileR(4),
-                  const SizedBox(height: 10),
-                  _statTileR(5),
-                  const SizedBox(height: 10),
-                  _statTileR(6),
-                ],
+                children: rightStats,
               ),
             ),
           ),
@@ -189,11 +230,11 @@ class _LiveMatch extends StatelessWidget {
     );
   }
 
-  Row _statTile(int number) {
+  Row _statTile(String name, String value) {
     return Row(
       children: [
         Text(
-          "Stat $number",
+          name,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             // fontSize: 18,
@@ -202,22 +243,22 @@ class _LiveMatch extends StatelessWidget {
         Expanded(
           child: Align(
             alignment: Alignment.centerRight,
-            child: Text("value $number"),
+            child: Text(value),
           ),
         ),
       ],
     );
   }
 
-  _statTileR(int number) {
+  _statTileR(String name, String value) {
     return Row(
       children: [
-        Text("value $number"),
+        Text(value),
         Expanded(
           child: Align(
             alignment: Alignment.centerRight,
             child: Text(
-              "Stat $number",
+              name,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -232,7 +273,10 @@ class _LiveMatch extends StatelessWidget {
 class _NextMatch extends StatelessWidget {
   const _NextMatch({
     Key? key,
+    required this.matchData,
   }) : super(key: key);
+
+  final NextMatchModel matchData;
 
   @override
   Widget build(BuildContext context) {
@@ -256,10 +300,10 @@ class _NextMatch extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       child: Row(
-        children: const [
+        children: [
           Text(
-            "Tomorrow - 7am",
-            style: TextStyle(
+            matchData.date,
+            style: const TextStyle(
               color: Color.fromRGBO(255, 255, 255, 0.5),
               decoration: TextDecoration.underline,
             ),
@@ -268,8 +312,8 @@ class _NextMatch extends StatelessWidget {
             child: Align(
               alignment: Alignment.centerRight,
               child: Text(
-                "Tournament Name",
-                style: TextStyle(
+                "Tournament ${matchData.tournament}",
+                style: const TextStyle(
                   color: Color.fromRGBO(255, 255, 255, 0.5),
                   decoration: TextDecoration.underline,
                 ),
@@ -286,12 +330,10 @@ class _NextMatch extends StatelessWidget {
       children: [
         Expanded(
           child: Column(
-            children: const [
-              Image(
-                image: AssetImage("static/assets/loading.gif"),
-                width: 100,
-              ),
-              Text("Team 1")
+            children: [
+              Image.network(matchData.team_1_icon,
+                  fit: BoxFit.contain, height: 90, width: 90),
+              Text(matchData.team_1)
             ],
           ),
         ),
@@ -301,12 +343,10 @@ class _NextMatch extends StatelessWidget {
         ),
         Expanded(
           child: Column(
-            children: const [
-              Image(
-                image: AssetImage("static/assets/loading.gif"),
-                width: 100,
-              ),
-              Text("Team 2")
+            children: [
+              Image.network(matchData.team_2_icon,
+                  fit: BoxFit.contain, height: 90, width: 90),
+              Text(matchData.team_2)
             ],
           ),
         ),

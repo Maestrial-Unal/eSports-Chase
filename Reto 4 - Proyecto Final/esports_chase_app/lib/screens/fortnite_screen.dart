@@ -53,12 +53,10 @@ class _TabsContent extends StatelessWidget {
           NewsTab(
             imageURL: "static/assets/B_Fortnite.jpg",
             tabName: "Fortnite",
-            newsData: [],
+            screen: "Fortnite",
           ),
-          TournamentsTab(
-            tournaments: [],
-          ),
-          LiveTab(),
+          TournamentsTab(esport: "Fornite"),
+          LiveTab(screen: "Fortnite"),
         ],
       ),
     );

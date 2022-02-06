@@ -8,7 +8,20 @@ class TournamentModel {
   final String esport;
   final String description;
   final String status;
+  final List<String> teams;
+  final List<String> teams_icons;
 
-  TournamentModel(this.id, this.type, this.name, this.image, this.icon,
-      this.region, this.esport, this.description, this.status);
+  TournamentModel(
+    this.id,
+    this.type,
+    this.name,
+    this.image,
+    this.icon,
+    this.region,
+    this.esport,
+    this.description,
+    this.status,
+    this.teams,
+    this.teams_icons,
+  );
 }

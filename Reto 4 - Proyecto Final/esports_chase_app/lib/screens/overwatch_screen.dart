@@ -53,12 +53,10 @@ class _TabsContent extends StatelessWidget {
           NewsTab(
             imageURL: "static/assets/B_Overwatch.jpg",
             tabName: "Overwatch",
-            newsData: [],
+            screen: "Overwatch",
           ),
-          TournamentsTab(
-            tournaments: [],
-          ),
-          LiveTab(),
+          TournamentsTab(esport: "Overwatch"),
+          LiveTab(screen: "Overwatch"),
         ],
       ),
     );

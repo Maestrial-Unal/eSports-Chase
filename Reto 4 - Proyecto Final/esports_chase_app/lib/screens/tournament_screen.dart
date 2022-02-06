@@ -7,9 +7,6 @@ import 'package:esports_chase_app/widgets/tournaments/tournament_news.dart';
 import 'package:esports_chase_app/widgets/tournaments/tournament_schedule.dart';
 import 'package:esports_chase_app/router/tournament_arguments.dart';
 
-import 'package:esports_chase_app/services/esports_chase_api.dart';
-import 'package:esports_chase_app/utils/transform_data.dart';
-
 class TournamentScreen extends StatelessWidget {
   const TournamentScreen({Key? key}) : super(key: key);
 
@@ -36,7 +33,7 @@ class TournamentScreen extends StatelessWidget {
                   Tab(text: 'Standings')
                 ],
               ),
-              _TabsContent(data: args.data)
+              _TabsContent(tournamentData: args.data)
             ],
           ),
         ));
@@ -44,26 +41,19 @@ class TournamentScreen extends StatelessWidget {
 }
 
 class _TabsContent extends StatelessWidget {
-  const _TabsContent({Key? key, required this.data}) : super(key: key);
-  final TournamentModel data;
+  const _TabsContent({Key? key, required this.tournamentData})
+      : super(key: key);
+  final TournamentModel tournamentData;
 
   @override
   Widget build(BuildContext context) {
-    EsportsChaseHttpService esportsChaseService = EsportsChaseHttpService();
     return Expanded(
       child: TabBarView(
         physics: const BouncingScrollPhysics(),
         children: [
-          FutureBuilder(
-              future: esportsChaseService.getRawNews("tag=${data.name}"),
-              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                return TournamentNews(
-                  tournament: data,
-                  newsData: transformDataNews(snapshot.data),
-                );
-              }),
-          TournamentSchedule(name: "Tournament $data.name"),
-          const TournamentStandings(),
+          TournamentNews(tournament: tournamentData),
+          TournamentSchedule(tournamentData: tournamentData),
+          TournamentStandings(tournamentData: tournamentData),
         ],
       ),
     );

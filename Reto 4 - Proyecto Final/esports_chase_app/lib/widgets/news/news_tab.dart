@@ -3,16 +3,20 @@ import 'package:flutter/material.dart';
 
 import 'package:esports_chase_app/models/new_model.dart';
 
+import 'package:esports_chase_app/services/esports_chase_api.dart';
+import 'package:esports_chase_app/utils/transform_data.dart';
+import 'package:esports_chase_app/utils/preferences_http.dart';
+
 class NewsTab extends StatefulWidget {
   final String imageURL;
   final String tabName;
-  final List<NewModel> newsData;
+  final String screen;
 
   const NewsTab({
     Key? key,
     required this.imageURL,
     required this.tabName,
-    required this.newsData,
+    required this.screen,
   }) : super(key: key);
 
   @override
@@ -20,17 +24,37 @@ class NewsTab extends StatefulWidget {
 }
 
 class _NewsTabState extends State<NewsTab> with AutomaticKeepAliveClientMixin {
+  Future<Null> _refreshLocalGallery() async {
+    setState(() {});
+    return Future.delayed(const Duration(seconds: 1));
+  }
+
   @override
   Widget build(BuildContext context) {
+    EsportsChaseHttpService esportsChaseService = EsportsChaseHttpService();
+    String query = "";
+    if (widget.screen != "feed") {
+      query = "?esport=${widget.screen}";
+    } else {
+      query = getQuery();
+    }
+
     super.build;
-    return ListView(
-      padding: EdgeInsets.zero,
-      children: [
-        _NewsHeader(imageURL: widget.imageURL, tabName: widget.tabName),
-        _NewsBody(
-          newsData: widget.newsData,
-        ),
-      ],
+    return RefreshIndicator(
+      onRefresh: _refreshLocalGallery,
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          _NewsHeader(imageURL: widget.imageURL, tabName: widget.tabName),
+          FutureBuilder(
+              future: esportsChaseService.getRawNews(query),
+              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                return _NewsBody(
+                  newsData: transformDataNews(snapshot.data),
+                );
+              }),
+        ],
+      ),
     );
   }
 
